@@ -1,0 +1,45 @@
+# ==============================
+# 1. IMPORTS
+# ==============================
+import cv2
+import numpy as np
+from tensorflow.keras.models import load_model
+from google.colab import drive, files
+
+# ==============================
+# 2. CONNECT GOOGLE DRIVE
+# ==============================
+drive.mount('/content/drive')
+
+# ==============================
+# 3. LOAD YOUR MODEL
+# ==============================
+model = load_model("/content/drive/MyDrive/pneumonia_model.h5")
+
+print("✅ AI Model Loaded Successfully")
+
+# ==============================
+# 4. PREDICT FUNCTION
+# ==============================
+def predict_image(image_path):
+    img = cv2.imread(image_path)
+    img = cv2.resize(img, (224, 224))
+    img = img / 255.0
+    img = np.reshape(img, (1, 224, 224, 3))
+
+    pred = model.predict(img)[0][0]
+
+    if pred > 0.5:
+        print("🩺 Prediction: PNEUMONIA")
+    else:
+        print("🩺 Prediction: NORMAL")
+
+# ==============================
+# 5. UPLOAD & PREDICT
+# ==============================
+print("📤 Upload X-ray image")
+uploaded = files.upload()
+
+image_path = list(uploaded.keys())[0]
+
+predict_image(image_path)
