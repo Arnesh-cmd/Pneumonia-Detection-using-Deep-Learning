@@ -1,4 +1,5 @@
 # Pneumonia-Detection-using-Deep-Learning
+##This Ai model has an success rate of 88.46%.
 ## How to Download and Use
 
 Follow these steps to run the project:
